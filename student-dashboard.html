@@ -179,24 +179,6 @@
   </main>
   <script src="js/voice-control.js"></script>
   <script src="js/dashboard.js"></script>
-  <script>
-    // Clear disability on logout
-    document.getElementById('sidebar-logout')?.addEventListener('click', () => {
-      localStorage.removeItem('accessExam_disability');
-      localStorage.removeItem('accessExam_voiceInput');
-    });
-
-    // Save current exam selection
-    document.getElementById('start-exam-1')?.addEventListener('click', () => {
-      localStorage.setItem('accessExam_currentExam', 'gk');
-    });
-    document.getElementById('start-exam-2')?.addEventListener('click', () => {
-      localStorage.setItem('accessExam_currentExam', 'math');
-    });
-    document.getElementById('start-exam-3')?.addEventListener('click', () => {
-      localStorage.setItem('accessExam_currentExam', 'english');
-    });
-  </script>
   <script src="p5.min.js"></script>
   <script src="vanta.topology.min.js"></script>
   <script>
