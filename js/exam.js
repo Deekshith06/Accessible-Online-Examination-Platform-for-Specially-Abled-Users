@@ -4,102 +4,17 @@ const isVisual     = disability === 'visual';
 const isMotor      = disability === 'motor';
 const voiceEnabled = localStorage.getItem('accessExam_voiceInput') === 'true';
 
-// ===== EXAM DATA SETS =====
-const examsData = {
-  gk: {
-    title: "General Knowledge Test",
-    baseTime: 3600, // 60 minutes
-    questions: [
-      { id:1,  text:"What is the capital city of India?",               options:["New Delhi","Mumbai","Chennai","Kolkata"] },
-      { id:2,  text:"Which planet is known as the Red Planet?",         options:["Venus","Mars","Jupiter","Saturn"] },
-      { id:3,  text:"Who wrote the Indian national anthem?",            options:["Rabindranath Tagore","Bankim Chandra","Mahatma Gandhi","Sarojini Naidu"] },
-      { id:4,  text:"What is the chemical formula for water?",          options:["H2O","CO2","NaCl","O2"] },
-      { id:5,  text:"How many states are there in India (as of 2024)?", options:["28","29","30","27"] },
-      { id:6,  text:"What is the largest ocean on Earth?",              options:["Atlantic","Indian","Arctic","Pacific"] },
-      { id:7,  text:"Who is known as the Father of the Nation in India?", options:["Jawaharlal Nehru","B.R. Ambedkar","Mahatma Gandhi","Sardar Patel"] },
-      { id:8,  text:"Which is the longest river in the world?",         options:["Amazon","Nile","Yangtze","Mississippi"] },
-      { id:9,  text:"What is the speed of light (approx)?",             options:["3×10⁸ m/s","3×10⁶ m/s","1.5×10⁸ m/s","9×10⁸ m/s"] },
-      { id:10, text:"In which year did India gain independence?",       options:["1947","1950","1945","1942"] },
-      { id:11, text:"Which is the smallest continent?",                 options:["Europe","Antarctica","Australia","South America"] },
-      { id:12, text:"What does CPU stand for?",                         options:["Central Processing Unit","Computer Power Unit","Core Processing Unit","Central Program Utility"] },
-      { id:13, text:"How many bones are in the adult human body?",      options:["206","208","196","210"] },
-      { id:14, text:"What is the national animal of India?",            options:["Lion","Elephant","Tiger","Peacock"] },
-      { id:15, text:"Which gas do plants absorb during photosynthesis?",options:["Oxygen","Nitrogen","Carbon Dioxide","Hydrogen"] },
-      { id:16, text:"Who invented the telephone?",                      options:["Thomas Edison","Alexander Graham Bell","Nikola Tesla","James Watt"] },
-      { id:17, text:"What is the square root of 144?",                  options:["11","12","13","14"] },
-      { id:18, text:"Which is the currency of Japan?",                  options:["Yuan","Won","Yen","Ringgit"] },
-      { id:19, text:"How many primary colors are there?",               options:["2","3","4","5"] },
-      { id:20, text:"What is the hardest natural substance on Earth?",  options:["Gold","Iron","Diamond","Quartz"] }
-    ],
-    correctAnswers: [0,1,0,0,0,3,2,1,0,0,2,0,0,2,2,1,1,2,1,2]
-  },
-  math: {
-    title: "Mathematics Basics",
-    baseTime: 2700, // 45 minutes
-    questions: [
-      { id:1,  text:"What is 5 + 7?", options: ["12", "10", "11", "13"] },
-      { id:2,  text:"What is 12 multiplied by 8?", options: ["96", "84", "88", "104"] },
-      { id:3,  text:"Solve: 15 - (6 + 3)", options: ["6", "9", "8", "5"] },
-      { id:4,  text:"What is the square of 15?", options: ["225", "200", "150", "250"] },
-      { id:5,  text:"What is the approximate value of Pi?", options: ["3.14", "2.71", "1.62", "1.41"] },
-      { id:6,  text:"What is the square root of 64?", options: ["8", "6", "7", "9"] },
-      { id:7,  text:"What is 100 divided by 4?", options: ["25", "20", "30", "15"] },
-      { id:8,  text:"If a triangle has sides of length 3, 4, and 5, what type of triangle is it?", options: ["Right-angled", "Equilateral", "Isosceles", "Obtuse"] },
-      { id:9,  text:"Solve for x: 2x + 5 = 15", options: ["5", "10", "8", "3"] },
-      { id:10, text:"What is 9 multiplied by 9?", options: ["81", "72", "90", "89"] },
-      { id:11, text:"What is the first prime number after 7?", options: ["11", "9", "8", "13"] },
-      { id:12, text:"What is 50% of 250?", options: ["125", "100", "150", "75"] },
-      { id:13, text:"If a circle has a radius of 7 cm, what is its approximate circumference?", options: ["44 cm", "22 cm", "14 cm", "88 cm"] },
-      { id:14, text:"What is the sum of angles in a triangle?", options: ["180 degrees", "90 degrees", "360 degrees", "270 degrees"] },
-      { id:15, text:"What is 2 to the power of 5?", options: ["32", "16", "64", "8"] }
-    ],
-    correctAnswers: [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
-  },
-  english: {
-    title: "English Comprehension",
-    baseTime: 5400, // 90 minutes
-    questions: [
-      { id:1,  text:"Select the antonym of the word 'Happy'.", options: ["Sad", "Joyful", "Excited", "Cheerful"] },
-      { id:2,  text:"Select the synonym of the word 'Quick'.", options: ["Fast", "Slow", "Heavy", "Dark"] },
-      { id:3,  text:"Choose the correct spelling:", options: ["Accommodate", "Acommodate", "Accomodate", "Acomodate"] },
-      { id:4,  text:"Fill in the blank: She ___ to school every day.", options: ["goes", "go", "going", "gone"] },
-      { id:5,  text:"Identify the noun in the sentence: 'The dog barked loudly.'", options: ["dog", "barked", "loudly", "The"] },
-      { id:6,  text:"What is the past tense of the verb 'run'?", options: ["ran", "runned", "running", "runs"] },
-      { id:7,  text:"Choose the sentence with correct punctuation:", options: ["Wow! That is beautiful.", "Wow, that is beautiful!", "Wow that is beautiful!", "Wow, that is beautiful?"] },
-      { id:8,  text:"Identify the adjective in the sentence: 'He wore a blue shirt.'", options: ["blue", "shirt", "wore", "He"] },
-      { id:9,  text:"Fill in the blank: Neither of the boys ___ present.", options: ["was", "were", "are", "been"] },
-      { id:10, text:"What is a person who writes books called?", options: ["Author", "Painter", "Actor", "Sculptor"] },
-      { id:11, text:"Select the synonym of 'Difficult'.", options: ["Hard", "Easy", "Simple", "Soft"] },
-      { id:12, text:"Select the antonym of 'Brave'.", options: ["Cowardly", "Strong", "Fearless", "Bold"] },
-      { id:13, text:"Choose the correct spelling:", options: ["Receive", "Recieve", "Receve", "Recive"] },
-      { id:14, text:"Fill in the blank: They ___ playing football yesterday.", options: ["were", "was", "are", "is"] },
-      { id:15, text:"Identify the verb in: 'The bird sings in the morning.'", options: ["sings", "bird", "morning", "bird sings"] },
-      { id:16, text:"What is the plural of 'child'?", options: ["children", "childs", "childrens", "childes"] },
-      { id:17, text:"Choose the correct prefix to make 'happy' negative:", options: ["un", "im", "in", "dis"] },
-      { id:18, text:"Identify the adverb in: 'She walked slowly.'", options: ["slowly", "walked", "She", "walked slowly"] },
-      { id:19, text:"Fill in the blank: I have been waiting here ___ two hours.", options: ["for", "since", "from", "during"] },
-      { id:20, text:"What does the idiom 'piece of cake' mean?", options: ["Very easy", "Delicious food", "A birthday celebration", "Very hard"] }
-    ],
-    correctAnswers: [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
-  }
-};
-
-// Load selected exam
-const currentExam   = localStorage.getItem('accessExam_currentExam') || 'gk';
-const examData      = examsData[currentExam] || examsData.gk;
-const questions     = examData.questions;
-const correctAnswers = examData.correctAnswers;
-const examTitle     = examData.title;
-
+// ===== EXAM STATE =====
+let currentExamId  = null;
+let attemptId      = null;
+let examData       = null;
+let questions      = [];
 let currentQ       = 0;
-let answers        = new Array(questions.length).fill(-1);
+let answers        = [];
 let ttsEnabled     = isVisual;
+let examTitle      = "";
 
-let timerSeconds = examData.baseTime;
-if (isVisual) {
-  timerSeconds += 1800; // Extra 30 minutes for visually impaired
-}
-
+let timerSeconds   = 0;
 let timerInterval;
 let paused         = false;
 let voiceAnswerRecognition = null;
@@ -135,34 +50,55 @@ function speakText(text, onEnd) {
 }
 
 // ===== INIT =====
-function init() {
-  document.title = `${examTitle} – AccessExam`;
-  const titleBar = document.querySelector('.exam-title-bar');
-  if (titleBar) titleBar.textContent = examTitle;
-  const topbarInfo = document.querySelector('.exam-topbar div div:last-child');
-  if (topbarInfo) topbarInfo.textContent = `${questions.length} Questions • MCQ`;
+async function init() {
+  const urlParams = new URLSearchParams(window.location.search);
+  currentExamId = urlParams.get('id') || localStorage.getItem('accessExam_currentExam');
+  
+  if (!currentExamId) {
+    alert("No exam selected!");
+    window.location.href = "student-dashboard.html";
+    return;
+  }
 
-  applyDisabilityMode();
-  buildQNav();
-  renderQuestion(0);
-  startTimer();
+  try {
+    examData = await apiFetch('/exams/' + currentExamId);
+    questions = examData.questions;
+    answers = new Array(questions.length).fill(-1);
+    examTitle = examData.title;
 
-  if (isVisual) {
-    injectBlindOverlay();         // add the full-screen blind HUD
-    bindVisualVoiceGestureStart();
-    
-    // We shouldn't start voice recognition or TTS until the user interacts.
-    // However, to prompt them, we'll try a short standard beep and visually update the UI.
-    updateBlindOverlay('listening', 'Press any key or tap to start exam');
-    const startMsg = 'Press spacebar or any key to begin the exam and activate voice control.';
-    
-    // Try to speak the prompt (Chrome allows TTS without gesture sometimes)
-    try {
-      const u = new SpeechSynthesisUtterance(startMsg);
-      speechSynthesis.speak(u);
-    } catch(e) {}
-    
-    // The actual start of the exam loop (mic + question 1) happens in the gesture handler
+    const startResult = await apiFetch('/submissions/start/' + currentExamId, { method: 'POST' });
+    attemptId = startResult.attemptId;
+
+    document.title = `${examTitle} – AccessExam`;
+    const titleBar = document.querySelector('.exam-title-bar');
+    if (titleBar) titleBar.textContent = examTitle;
+    const topbarInfo = document.querySelector('.exam-topbar div div:last-child');
+    if (topbarInfo) topbarInfo.textContent = `${questions.length} Questions • MCQ`;
+
+    timerSeconds = examData.durationMinutes * 60;
+    if (isVisual) {
+      timerSeconds += 1800; // Extra 30 minutes for visually impaired
+    }
+
+    applyDisabilityMode();
+    buildQNav();
+    renderQuestion(0);
+    startTimer();
+
+    if (isVisual) {
+      injectBlindOverlay();         // add the full-screen blind HUD
+      bindVisualVoiceGestureStart();
+      updateBlindOverlay('listening', 'Press any key or tap to start exam');
+      const startMsg = 'Press spacebar or any key to begin the exam and activate voice control.';
+      try {
+        const u = new SpeechSynthesisUtterance(startMsg);
+        speechSynthesis.speak(u);
+      } catch(e) {}
+    }
+  } catch (err) {
+    console.error("Init Error:", err);
+    alert("Failed to load exam data.");
+    window.location.href = "student-dashboard.html";
   }
 }
 
@@ -238,7 +174,7 @@ function renderQuestion(idx) {
   const block = document.getElementById('question-block');
   block.innerHTML = `
     <div class="q-number-tag">Question ${idx+1}</div>
-    <p class="q-text-main" id="q-main-text">${q.text}</p>
+    <p class="q-text-main" id="q-main-text">${q.questionText}</p>
     <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px;">
       <button class="q-tts-btn" id="btn-read-q" onclick="speakQuestion(${idx})" aria-label="Read question aloud">
         🔊 Read Question
@@ -283,7 +219,7 @@ function renderQuestion(idx) {
   updateQNav();
 
   if (isVisual) {
-    updateBlindOverlay('speaking', `Q${idx+1}: ${q.text}`);
+    updateBlindOverlay('speaking', `Q${idx+1}: ${q.questionText}`);
     speakQuestion(idx);
   }
 }
@@ -359,7 +295,7 @@ function speakQuestion(idx) {
     : ' No answer selected yet.';
   const navHint = buildNavHint(idx);
   const fullText =
-    `Question ${idx+1} of ${questions.length}. ${q.text}. ` +
+    `Question ${idx+1} of ${questions.length}. ${q.questionText}. ` +
     `Option A: ${q.options[0]}. ` +
     `Option B: ${q.options[1]}. ` +
     `Option C: ${q.options[2]}. ` +
@@ -367,7 +303,7 @@ function speakQuestion(idx) {
     `${ansLabel} ` +
     `Say A, B, C, or D to answer. ${navHint}`;
 
-  updateBlindOverlay('speaking', `Q${idx+1}: ${q.text}`);
+  updateBlindOverlay('speaking', `Q${idx+1}: ${q.questionText}`);
 
   if (isVisual) {
     speakText(fullText, () => updateBlindOverlay('listening'));
@@ -737,14 +673,37 @@ function cancelSubmit() {
   speakText('Cancelled. Returning to question ' + (currentQ + 1) + '. ' + buildNavHint(currentQ));
 }
 
-function confirmSubmit() {
-  stopVisualVoiceLoop(); // halt voice dispatcher before navigating
+async function confirmSubmit() {
+  stopVisualVoiceLoop();
   clearInterval(timerInterval);
-  const score = answers.reduce((acc,a,i)=>acc+(a===correctAnswers[i]?1:0),0);
-  localStorage.setItem('examScore', JSON.stringify({ score, total:questions.length }));
-  speakText(`Exam submitted! Your score is ${score} out of ${questions.length}. Redirecting to results.`, () => {
-    window.location.href = 'result.html';
-  });
+  
+  const payloadAnswers = answers.map((opt, i) => ({
+    questionId: questions[i].id,
+    selectedOption: opt
+  }));
+
+  try {
+    const btn = document.getElementById('modal-confirm');
+    if (btn) { btn.textContent = 'Submitting...'; btn.disabled = true; }
+    
+    const result = await apiFetch('/submissions/submit', {
+      method: 'POST',
+      body: JSON.stringify({
+        attemptId: attemptId,
+        answers: payloadAnswers
+      })
+    });
+    
+    localStorage.setItem('examResult', JSON.stringify(result));
+    
+    speakText(`Exam submitted! Your score is ${result.score} out of ${result.totalMarks}. Redirecting to results.`, () => {
+      window.location.href = 'result.html';
+    });
+  } catch (err) {
+    alert("Failed to submit exam: " + err.message);
+    const btn = document.getElementById('modal-confirm');
+    if (btn) { btn.textContent = 'Yes, Submit'; btn.disabled = false; }
+  }
 }
 
 document.getElementById('modal-cancel')?.addEventListener('click', cancelSubmit);
