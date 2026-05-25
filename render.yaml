@@ -1,0 +1,35 @@
+services:
+  - type: web
+    name: accessexam-backend
+    env: docker
+    region: oregon
+    rootDir: backend
+    dockerfilePath: Dockerfile
+    plan: free
+    healthCheckPath: /api/exams
+    envVars:
+      - key: SPRING_DATASOURCE_URL
+        fromDatabase:
+          name: accessexam-db
+          property: connectionString
+      - key: SPRING_DATASOURCE_USERNAME
+        fromDatabase:
+          name: accessexam-db
+          property: user
+      - key: SPRING_DATASOURCE_PASSWORD
+        fromDatabase:
+          name: accessexam-db
+          property: password
+      - key: SPRING_DATASOURCE_DRIVER_CLASS_NAME
+        value: org.postgresql.Driver
+      - key: SPRING_JPA_DATABASE_PLATFORM
+        value: org.hibernate.dialect.PostgreSQLDialect
+      - key: SPRING_JPA_HIBERNATE_DDL_AUTO
+        value: update
+
+databases:
+  - name: accessexam-db
+    region: oregon
+    plan: free
+    databaseName: accessexam
+    user: admin

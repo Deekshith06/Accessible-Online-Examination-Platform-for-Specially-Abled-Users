@@ -65,6 +65,13 @@
       <optional>true</optional>
     </dependency>
 
+    <!-- PostgreSQL Driver (for Render/Railway production) -->
+    <dependency>
+      <groupId>org.postgresql</groupId>
+      <artifactId>postgresql</artifactId>
+      <scope>runtime</scope>
+    </dependency>
+
     <!-- JWT – io.jsonwebtoken (jjwt) -->
     <dependency>
       <groupId>io.jsonwebtoken</groupId>
