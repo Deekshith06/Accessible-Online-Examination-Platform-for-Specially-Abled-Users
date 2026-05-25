@@ -3,7 +3,6 @@
 backend/target/
 backend/.idea/
 backend/jdk-17.0.19+10/
-backend/mvnw
 backend/jdk17.tar.gz
 *.class
 *.log
