@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin Dashboard – AccessExam</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="css/style.css"/>
+  <link rel="stylesheet" href="css/dashboard.css"/>
+</head>
+<body class="dash-body">
+  <div id="vanta-bg" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1; pointer-events: none;"></div>
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+
+  <aside class="sidebar" role="navigation" aria-label="Admin navigation">
+    <div class="sidebar-brand">
+      <div class="brand-icon">♿</div><span class="brand-name">AccessExam</span>
+    </div>
+    <nav class="sidebar-nav">
+      <a href="admin-dashboard.html" class="sidebar-link active" aria-current="page">🏠 Dashboard</a>
+      <a href="#" class="sidebar-link">📝 Manage Exams</a>
+      <a href="#" class="sidebar-link">👥 Students</a>
+      <a href="#" class="sidebar-link">❓ Questions</a>
+      <a href="#" class="sidebar-link">📊 Analytics</a>
+      <a href="#" class="sidebar-link">⚙️ Settings</a>
+    </nav>
+    <div class="sidebar-footer">
+      <a href="login.html" class="sidebar-link logout" id="sidebar-logout">🚪 Logout</a>
+    </div>
+  </aside>
+
+  <main class="dash-main" id="main-content">
+    <header class="dash-header admin-header" style="border-radius:var(--radius);padding:24px;margin-bottom:36px;">
+      <div>
+        <h1 class="dash-welcome">Admin <span class="gradient-text">Dashboard</span> 🛡️</h1>
+        <p class="dash-date">Monday, May 12, 2026 • System Status: <span style="color:#34d399;">● Online</span></p>
+      </div>
+      <a href="#" class="btn-primary" id="create-exam-btn" style="padding:12px 20px;font-size:0.9rem;">+ Create New Exam</a>
+    </header>
+
+    <!-- Stats -->
+    <div class="dash-stats">
+      <div class="dash-stat-card">
+        <div class="dsc-icon" style="background:var(--bg-card2); border: 1px solid var(--primary);">👥</div>
+        <div><div class="dsc-value">248</div><div class="dsc-label">Total Students</div></div>
+      </div>
+      <div class="dash-stat-card">
+        <div class="dsc-icon" style="background:var(--bg-card2); border: 1px solid #34d399;">📝</div>
+        <div><div class="dsc-value">12</div><div class="dsc-label">Active Exams</div></div>
+      </div>
+      <div class="dash-stat-card">
+        <div class="dsc-icon" style="background:var(--bg-card2); border: 1px solid #ff6b6b;">♿</div>
+        <div><div class="dsc-value">87</div><div class="dsc-label">Accessibility Users</div></div>
+      </div>
+      <div class="dash-stat-card">
+        <div class="dsc-icon" style="background:var(--bg-card2); border: 1px solid #fbbf24;">📊</div>
+        <div><div class="dsc-value">76%</div><div class="dsc-label">Avg. Pass Rate</div></div>
+      </div>
+    </div>
+
+    <!-- Exam Management Table -->
+    <section aria-labelledby="exam-mgmt-heading">
+      <h2 id="exam-mgmt-heading" class="dash-section-title">Exam Management</h2>
+      <div class="results-table-wrap">
+        <table class="results-table" role="table" aria-label="Exams list">
+          <thead>
+            <tr>
+              <th scope="col">Exam Title</th>
+              <th scope="col">Duration</th>
+              <th scope="col">Students</th>
+              <th scope="col">Status</th>
+              <th scope="col">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>General Knowledge Test</td>
+              <td>60 min</td>
+              <td>45</td>
+              <td><span class="status-badge pass">Active</span></td>
+              <td><a href="#" class="form-link" style="margin-right:12px">Edit</a><a href="#" class="form-link" style="color:#ef4444">Delete</a></td>
+            </tr>
+            <tr>
+              <td>Mathematics Basics</td>
+              <td>45 min</td>
+              <td>38</td>
+              <td><span class="status-badge pass">Active</span></td>
+              <td><a href="#" class="form-link" style="margin-right:12px">Edit</a><a href="#" class="form-link" style="color:#ef4444">Delete</a></td>
+            </tr>
+            <tr>
+              <td>English Comprehension</td>
+              <td>90 min</td>
+              <td>52</td>
+              <td><span class="status-badge" style="background:var(--bg-card2); border: 1px solid #fbbf24; color:#fbbf24">Scheduled</span></td>
+              <td><a href="#" class="form-link" style="margin-right:12px">Edit</a><a href="#" class="form-link" style="color:#ef4444">Delete</a></td>
+            </tr>
+            <tr>
+              <td>Science Quiz</td>
+              <td>30 min</td>
+              <td>61</td>
+              <td><span class="status-badge fail">Closed</span></td>
+              <td><a href="#" class="form-link" style="margin-right:12px">Results</a><a href="#" class="form-link" style="color:#ef4444">Delete</a></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Students with Extra Time -->
+    <section aria-labelledby="extra-time-heading" style="margin-top:40px;">
+      <h2 id="extra-time-heading" class="dash-section-title">Students with Accommodations</h2>
+      <div class="results-table-wrap">
+        <table class="results-table" role="table" aria-label="Students with special accommodations">
+          <thead>
+            <tr>
+              <th scope="col">Student</th>
+              <th scope="col">Disability Type</th>
+              <th scope="col">Extra Time</th>
+              <th scope="col">Accommodation</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Arun Kumar</td>
+              <td>👁️ Visual Impairment</td>
+              <td><span class="score-badge high">+30 min</span></td>
+              <td>TTS, High Contrast, Keyboard</td>
+            </tr>
+            <tr>
+              <td>Priya Sharma</td>
+              <td>🧑‍🦽 Motor Disability</td>
+              <td><span class="score-badge high">+20 min</span></td>
+              <td>Voice Commands, Large Targets</td>
+            </tr>
+
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+  <script src="js/voice-control.js"></script>
+  <script src="js/dashboard.js"></script>
+  <script>
+    // Clear disability on logout
+    document.getElementById('sidebar-logout')?.addEventListener('click', () => {
+      localStorage.removeItem('accessExam_disability');
+      localStorage.removeItem('accessExam_voiceInput');
+    });
+  </script>
+  <script src="p5.min.js"></script>
+  <script src="vanta.topology.min.js"></script>
+  <script>
+    if (typeof VANTA !== 'undefined') {
+      VANTA.TOPOLOGY({
+        el: "#vanta-bg",
+        mouseControls: true,
+        touchControls: true,
+        gyroControls: false,
+        minHeight: 200.00,
+        minWidth: 200.00,
+        scale: 1.00,
+        scaleMobile: 1.00,
+        color: 0x89964e,
+        backgroundColor: 0x2222
+      });
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>General Knowledge Test – AccessExam</title>
+  <meta name="description" content="Take your exam on AccessExam — with full accessibility support"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="css/style.css"/>
+  <link rel="stylesheet" href="css/dashboard.css"/>
+</head>
+<body class="exam-body">
+  <div id="vanta-bg" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1; pointer-events: none;"></div>
+  <a href="#exam-content" class="skip-link">Skip to exam</a>
+
+  <!-- Top bar -->
+  <header class="exam-topbar" role="banner">
+    <div>
+      <div class="exam-title-bar">General Knowledge Test</div>
+      <div style="font-size:0.78rem;color:var(--text-muted)">20 Questions • MCQ</div>
+    </div>
+    <div id="exam-timer" class="exam-timer" role="timer" aria-live="polite" aria-label="Time remaining">⏱ 59:59</div>
+    <div class="exam-controls-bar">
+      <button class="icon-btn" id="ex-tts"      aria-label="Toggle Text-to-Speech">🔊</button>
+      <button class="icon-btn" id="ex-voice"    aria-label="Speak Answer (V key)" title="Press V to speak answer">🎙</button>
+      <button class="icon-btn" id="ex-pause"    aria-label="Pause Exam">⏸</button>
+      <button class="icon-btn" id="ex-contrast" aria-label="Toggle High Contrast">🎨</button>
+      <button class="icon-btn" id="ex-font"     aria-label="Increase Font Size">🔍</button>
+    </div>
+  </header>
+
+  <!-- Visual mode help bar (shown only when visual mode is active) -->
+  <div id="visual-help-bar" style="display:none;background:var(--bg-card2);border-bottom:1px solid var(--primary);padding:8px 20px;font-size:0.8rem;color:#c2cca6;display:none;gap:20px;flex-wrap:wrap;" role="note" aria-label="Keyboard shortcuts for visual mode">
+    <span>🔊 <strong>R</strong> = Re-read question</span>
+    <span>🎙 <strong>V</strong> = Speak your answer (A/B/C/D)</span>
+    <span>⬅ <strong>Arrow keys</strong> = Navigate questions</span>
+    <span>🔢 <strong>1-4</strong> = Select option</span>
+  </div>
+
+  <div class="exam-layout">
+    <!-- Question navigator -->
+    <aside class="exam-sidebar" aria-label="Question navigation">
+      <div class="qnav-title">Questions</div>
+      <div class="qnav-grid" id="qnav-grid" role="navigation" aria-label="Jump to question"></div>
+      <div class="qnav-legend">
+        <div class="legend-item"><div class="legend-dot" style="background:var(--primary)"></div> Current</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#34d399"></div> Answered</div>
+        <div class="legend-item"><div class="legend-dot" style="background:var(--border)"></div> Not Answered</div>
+      </div>
+    </aside>
+
+    <!-- Question area -->
+    <main class="exam-content" id="exam-content">
+      <div class="q-progress">
+        <span class="q-progress-text" id="q-progress-text">Question 1 of 20</span>
+        <span class="q-progress-text" id="q-score-info" style="color:var(--secondary)">+4 marks per correct</span>
+      </div>
+      <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="5" aria-label="Exam progress">
+        <div class="progress-fill" id="progress-fill" style="width:5%"></div>
+      </div>
+
+      <div class="question-block" id="question-block">
+        <!-- Injected by JS -->
+      </div>
+
+      <div class="exam-nav-btns">
+        <button class="btn-exam-nav btn-exam-prev" id="btn-prev" aria-label="Previous question">← Previous</button>
+        <button class="btn-exam-nav btn-exam-next" id="btn-next" aria-label="Next question">Next →</button>
+      </div>
+    </main>
+  </div>
+
+  <!-- Submit Modal -->
+  <div id="submit-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="modal-title" style="display:none;">
+    <div class="modal-card">
+      <h2 id="modal-title" class="modal-title">Submit Exam?</h2>
+      <p class="modal-body">You have answered <strong id="answered-count">0</strong> out of <strong>20</strong> questions. Are you sure you want to submit?</p>
+      <div class="modal-actions">
+        <button class="btn-exam-nav btn-exam-prev" id="modal-cancel">Cancel</button>
+        <button class="btn-exam-nav btn-exam-submit" id="modal-confirm">Submit Exam ✓</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/voice-control.js"></script>
+  <script src="js/exam.js"></script>
+  <script>
+    const _disability = localStorage.getItem('accessExam_disability') || 'none';
+    if (_disability === 'visual') {
+      // Blind users: hide keyboard shortcut bar (can't see it) and hide
+      // the voice toolbar button (persistent loop handles everything).
+      const bar = document.getElementById('visual-help-bar');
+      if (bar) bar.style.display = 'none';
+      const voiceBtn = document.getElementById('ex-voice');
+      if (voiceBtn) voiceBtn.style.display = 'none';
+    } else {
+      // Non-visual modes: voice button triggers one-shot answer input
+      document.getElementById('ex-voice')?.addEventListener('click', () => {
+        if (typeof startVoiceAnswer === 'function') startVoiceAnswer(currentQ);
+      });
+    }
+  </script>
+
+  <script src="p5.min.js"></script>
+  <script src="vanta.topology.min.js"></script>
+  <script>
+    if (typeof VANTA !== 'undefined') {
+      VANTA.TOPOLOGY({
+        el: "#vanta-bg",
+        mouseControls: true,
+        touchControls: true,
+        gyroControls: false,
+        minHeight: 200.00,
+        minWidth: 200.00,
+        scale: 1.00,
+        scaleMobile: 1.00,
+        color: 0x89964e,
+        backgroundColor: 0x2222
+      });
+    }
+  </script>
+</body>
+</html>

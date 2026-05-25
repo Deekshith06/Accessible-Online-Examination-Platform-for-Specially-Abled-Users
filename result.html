@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Exam Result – AccessExam</title>
+  <meta name="description" content="Your exam result from AccessExam"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="css/style.css"/>
+  <style>
+    body { display:flex; align-items:center; justify-content:center; min-height:100vh; padding:24px; position:relative; overflow-y:auto; flex-direction:column; gap:16px; background:transparent; }
+    .result-card { background:var(--bg-card); border:1px solid var(--border); border-radius:24px; padding:48px; max-width:520px; width:100%; text-align:center; position:relative; z-index:1; box-shadow:var(--shadow); margin: 40px auto; }
+    .result-emoji { font-size:4rem; margin-bottom:16px; display:block; }
+    .result-title { font-family:'Outfit',sans-serif; font-size:1.8rem; font-weight:800; color:#fff; margin-bottom:8px; }
+    .result-subtitle { color:var(--text-muted); margin-bottom:32px; }
+    .score-circle { width:140px; height:140px; border-radius:50%; border:6px solid var(--primary); display:flex; flex-direction:column; align-items:center; justify-content:center; margin:0 auto 32px; background:var(--bg-card); }
+    .score-num { font-family:'Outfit',sans-serif; font-size:2.4rem; font-weight:900; color:#fff; }
+    .score-out { font-size:0.85rem; color:var(--text-muted); }
+    .result-stats { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-bottom:32px; }
+    .rs-item { background:var(--bg-dark); border:1px solid var(--border); border-radius:var(--radius-sm); padding:16px; }
+    .rs-val { font-family:'Outfit',sans-serif; font-size:1.3rem; font-weight:800; color:#fff; }
+    .rs-lab { font-size:0.75rem; color:var(--text-muted); }
+    .result-actions { display:flex; gap:12px; justify-content:center; flex-wrap:wrap; }
+ 
+     /* TTS result bar */
+    .result-tts-bar { position:relative; z-index:1; background:var(--bg-card2); border:1px solid var(--primary); border-radius:12px; padding:10px 18px; max-width:520px; width:100%; display:flex; align-items:center; gap:12px; font-size:0.85rem; color:#c2cca6; cursor:pointer; }
+    .result-tts-bar:hover { background:var(--bg-card2); }
+    .result-tts-bar button { background:var(--bg-card2); border:1px solid var(--primary); border-radius:8px; padding:4px 12px; color:#c2cca6; font-size:0.78rem; font-weight:700; cursor:pointer; font-family:'Inter',sans-serif; }
+    .result-tts-bar button:hover { background:var(--primary); }
+ 
+     /* TTS ring */
+    .tts-speaking-ring { position:fixed; bottom:20px; right:20px; width:52px; height:52px; border-radius:50%; background:linear-gradient(135deg,#89964e,#a4b360); display:none; align-items:center; justify-content:center; font-size:1.3rem; box-shadow:0 4px 20px rgba(137,150,78,0.5); cursor:pointer; z-index:1000; border:none; }
+    .tts-speaking-ring.show { display:flex; } 
+  </style>
+</head>
+<body>
+  <div id="vanta-bg" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1; pointer-events: none;"></div>
+  <div class="hero-bg-orbs" aria-hidden="true"><div class="orb orb-1"></div><div class="orb orb-2"></div></div>
+
+  <!-- TTS read-aloud bar -->
+  <div class="result-tts-bar" id="result-tts-bar" role="region" aria-label="Result narration">
+    <span>🔊</span>
+    <span id="tts-bar-label" style="flex:1;">Click to hear your results read aloud</span>
+    <button id="btn-read-result" aria-label="Read results aloud">Read Results</button>
+    <button id="btn-stop-tts" aria-label="Stop reading" onclick="stopSpeech()">Stop</button>
+  </div>
+
+  <div class="result-card" role="main" aria-labelledby="result-heading">
+    <span class="result-emoji" id="result-emoji" aria-hidden="true">🎉</span>
+    <h1 class="result-title" id="result-heading">Exam Completed!</h1>
+    <p class="result-subtitle" id="result-subtitle">Here are your results for the General Knowledge Test.</p>
+    <div class="score-circle" role="img" aria-label="Score display">
+      <span class="score-num" id="score-num">0</span>
+      <span class="score-out" id="score-out">out of 20</span>
+    </div>
+    <div class="result-stats" role="list" aria-label="Result statistics">
+      <div class="rs-item" role="listitem">
+        <div class="rs-val" id="rs-correct" style="color:#34d399">0</div>
+        <div class="rs-lab">Correct</div>
+      </div>
+      <div class="rs-item" role="listitem">
+        <div class="rs-val" id="rs-wrong" style="color:#ef4444">0</div>
+        <div class="rs-lab">Wrong</div>
+      </div>
+      <div class="rs-item" role="listitem">
+        <div class="rs-val" id="rs-pct" style="color:var(--primary)">0%</div>
+        <div class="rs-lab">Score</div>
+      </div>
+    </div>
+    <div class="result-actions">
+      <a href="student-dashboard.html" class="btn-hero-primary" id="btn-dashboard">← Back to Dashboard</a>
+      <a href="exam.html" class="btn-hero-secondary" id="btn-retake">Retake Exam</a>
+    </div>
+  </div>
+
+  <!-- TTS ring indicator -->
+  <button class="tts-speaking-ring" id="tts-ring" aria-label="Stop reading" onclick="stopSpeech()" title="Click to stop">🔊</button>
+
+  <script src="js/voice-control.js"></script>
+  <script>
+    // ===== LOAD RESULTS =====
+    const data = JSON.parse(localStorage.getItem('examScore') || '{"score":15,"total":20}');
+    const { score, total } = data;
+    const wrong = total - score;
+    const pct   = Math.round((score / total) * 100);
+
+    document.getElementById('score-num').textContent    = score;
+    document.getElementById('score-out').textContent    = `out of ${total}`;
+    document.getElementById('rs-correct').textContent   = score;
+    document.getElementById('rs-wrong').textContent     = wrong;
+    document.getElementById('rs-pct').textContent       = pct + '%';
+
+    let heading, emoji;
+    if (pct >= 80)      { emoji = '🏆'; heading = 'Excellent Performance!'; }
+    else if (pct >= 60) { emoji = '👏'; heading = 'Good Job!'; }
+    else                { emoji = '📚'; heading = 'Keep Practicing!'; }
+
+    document.getElementById('result-emoji').textContent   = emoji;
+    document.getElementById('result-heading').textContent = heading;
+
+    const circle = document.querySelector('.score-circle');
+    circle.style.borderColor = pct >= 80 ? '#34d399' : pct >= 60 ? '#fbbf24' : '#ef4444';
+
+    // Update ARIA label for screen readers
+    circle.setAttribute('aria-label', `Score: ${score} out of ${total}, ${pct} percent`);
+
+    // ===== TTS =====
+    const disability = localStorage.getItem('accessExam_disability') || 'none';
+    const isVisual   = disability === 'visual';
+    let ttsActive    = isVisual;
+
+    // ===== DYNAMIC BEEP GENERATOR =====
+    function playBeep() {
+      if (disability === 'hearing') return; // no beep for hearing impaired
+      try {
+        const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+        if (!AudioContextClass) return;
+        const ctx = new AudioContextClass();
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(650, ctx.currentTime);
+        gain.gain.setValueAtTime(0.04, ctx.currentTime);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start();
+        osc.stop(ctx.currentTime + 0.12);
+      } catch (e) {}
+    }
+
+    function speak(text, onEnd) {
+      if (!ttsActive) {
+        if (onEnd) onEnd();
+        return;
+      }
+      VoiceControl.speak(text, onEnd);
+    }
+
+    // ===== STOP SPEECH =====
+    function stopSpeech() {
+      VoiceControl.cancelSpeech();
+    }
+
+    function readResults() {
+      const msg = `${heading}. Your exam results: You answered ${score} out of ${total} questions correctly. That is ${pct} percent. You got ${wrong} questions wrong. ${pct >= 60 ? 'You have passed the exam.' : 'You did not pass this time. Keep practicing!'}`;
+      speak(msg + " Say dashboard to return, or retake to try again.", () => {
+        document.getElementById('tts-bar-label').textContent = 'Listening for command...';
+        runResultVoiceLoop();
+      });
+    }
+
+    // ===== RESULT VOICE LOOP =====
+    function runResultVoiceLoop() {
+      if (!isVisual) return;
+      VoiceControl.startListening('result', (res) => {
+        VoiceControl.stopListening();
+        const cmd = res.command || res.raw.toLowerCase();
+        if (cmd === 'dashboard' || cmd.includes('dashboard') || cmd.includes('back')) {
+          speak("Returning to dashboard.", () => {
+            window.location.href = 'student-dashboard.html';
+          });
+        } else if (cmd === 'retake' || cmd.includes('retake') || cmd.includes('again')) {
+          speak("Retaking exam.", () => {
+            window.location.href = 'exam.html';
+          });
+        } else {
+          speak("Command not recognized. Say dashboard or retake.", () => runResultVoiceLoop());
+        }
+      });
+    }
+
+    if (ttsActive) {
+      document.getElementById('btn-dashboard')?.addEventListener('focus', () => {
+        speak('Back to Dashboard button. Press Enter to return to your dashboard.');
+      });
+      document.getElementById('btn-retake')?.addEventListener('focus', () => {
+        speak('Retake Exam button. Press Enter to retake this exam.');
+      });
+    }
+
+    document.getElementById('btn-read-result').addEventListener('click', readResults);
+
+    // Update TTS bar label based on mode
+    if (ttsActive) {
+      document.getElementById('tts-bar-label').textContent = 'Visual mode — results will be read automatically';
+      document.getElementById('result-tts-bar').style.background = 'var(--bg-card2)';
+    }
+
+    // Auto-read and start voice navigation loop for visual mode on load
+    if (ttsActive) {
+      window.addEventListener('load', () => {
+        setTimeout(readResults, 800);
+      });
+    }
+  </script>
+  <script src="p5.min.js"></script>
+  <script src="vanta.topology.min.js"></script>
+  <script>
+    if (typeof VANTA !== 'undefined') {
+      VANTA.TOPOLOGY({
+        el: "#vanta-bg",
+        mouseControls: true,
+        touchControls: true,
+        gyroControls: false,
+        minHeight: 200.00,
+        minWidth: 200.00,
+        scale: 1.00,
+        scaleMobile: 1.00,
+        color: 0x89964e,
+        backgroundColor: 0x2222
+      });
+    }
+  </script>
+</body>
+</html>
