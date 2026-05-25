@@ -9,7 +9,7 @@ INSERT INTO users (name, email, password, role, disability_type, extra_time_minu
 VALUES (
   'Admin User',
   'admin@accessexam.com',
-  '$2a$10$rX9V4TgJXFp5j5fq2xN9nOUQJhDqCJ0T5Vs7v2.5JpEFXnCnJGlpK',
+  '$2b$10$Sd/wYx/CQ9B.JkSGjxEm6uDiDdecH9eGNuPmNKp0PgJKxre1lrOQy',
   'ADMIN',
   'NONE',
   0
