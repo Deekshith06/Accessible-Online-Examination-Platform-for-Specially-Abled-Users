@@ -81,6 +81,14 @@ if (loginForm) {
         body: JSON.stringify({ email: email.value, password: pwd.value })
       });
 
+      // Check if the actual role matches the selected role on the UI
+      const selectedRoleBtn = document.querySelector('.role-btn.active');
+      const selectedRole = selectedRoleBtn && selectedRoleBtn.id === 'role-admin' ? 'ADMIN' : 'STUDENT';
+
+      if (data.role !== selectedRole) {
+        throw new Error(`Account found, but it is not registered as an ${selectedRole === 'ADMIN' ? 'Admin' : 'Student'}.`);
+      }
+
       // Login success
       localStorage.setItem('jwtToken', data.token);
       localStorage.setItem('accessExam_role', data.role.toLowerCase());
