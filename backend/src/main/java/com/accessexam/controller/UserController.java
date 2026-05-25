@@ -50,6 +50,23 @@ public class UserController {
         return ResponseEntity.ok(userService.saveAccessibilityPrefs(principal.getUsername(), prefsJson));
     }
 
+    /**
+     * Update user profile details
+     * Body: {"name": "New Name", "disabilityType": "VISUAL"}
+     */
+    @PutMapping("/me/profile")
+    public ResponseEntity<UserDto> updateProfile(
+            @AuthenticationPrincipal UserDetails principal,
+            @RequestBody Map<String, String> body) {
+        String newName = body.get("name");
+        String disTypeStr = body.get("disabilityType");
+        com.accessexam.entity.User.DisabilityType newDisType = null;
+        if (disTypeStr != null && !disTypeStr.trim().isEmpty()) {
+            newDisType = com.accessexam.entity.User.DisabilityType.valueOf(disTypeStr.toUpperCase());
+        }
+        return ResponseEntity.ok(userService.updateProfile(principal.getUsername(), newName, newDisType));
+    }
+
     /** List all student users — Admin only */
     @GetMapping
     @PreAuthorize("hasRole('ADMIN')")

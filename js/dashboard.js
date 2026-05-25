@@ -284,3 +284,53 @@ window.addEventListener('DOMContentLoaded', () => {
     if (welcomeName) welcomeName.textContent = username;
   }
 });
+
+// ===== PROFILE MODAL LOGIC =====
+const profileLink = document.getElementById('profile-link');
+const profileModal = document.getElementById('profile-modal');
+const closeProfileModal = document.getElementById('close-profile-modal');
+const profileForm = document.getElementById('profile-form');
+const profileNameInput = document.getElementById('profile-name');
+const profileDisabilityInput = document.getElementById('profile-disability');
+
+if (profileLink && profileModal) {
+  profileLink.addEventListener('click', async (e) => {
+    e.preventDefault();
+    try {
+      const user = await apiFetch('/users/me');
+      if (user) {
+        profileNameInput.value = user.name;
+        profileDisabilityInput.value = user.disabilityType || 'NONE';
+        profileModal.style.display = 'flex';
+        dashSpeak("Profile modal opened.");
+      }
+    } catch (err) {
+      alert("Failed to load profile.");
+    }
+  });
+
+  closeProfileModal.addEventListener('click', () => {
+    profileModal.style.display = 'none';
+  });
+
+  profileForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const newName = profileNameInput.value.trim();
+    const newDisability = profileDisabilityInput.value;
+    try {
+      const updatedUser = await apiFetch('/users/me/profile', {
+        method: 'PUT',
+        body: JSON.stringify({ name: newName, disabilityType: newDisability })
+      });
+      if (updatedUser) {
+        localStorage.setItem('accessExam_username', updatedUser.name);
+        localStorage.setItem('accessExam_disability', updatedUser.disabilityType.toLowerCase());
+        alert("Profile updated successfully!");
+        profileModal.style.display = 'none';
+        window.location.reload();
+      }
+    } catch (err) {
+      alert(err.message || "Failed to update profile");
+    }
+  });
+}

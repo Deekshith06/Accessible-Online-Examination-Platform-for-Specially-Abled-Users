@@ -37,6 +37,20 @@ public class UserService {
         return toDto(userRepository.save(user));
     }
 
+    /** Update basic profile details (Name and Disability Type) */
+    @Transactional
+    public UserDto updateProfile(String email, String newName, User.DisabilityType newDisabilityType) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("User not found: " + email));
+        if (newName != null && !newName.trim().isEmpty()) {
+            user.setName(newName);
+        }
+        if (newDisabilityType != null) {
+            user.setDisabilityType(newDisabilityType);
+        }
+        return toDto(userRepository.save(user));
+    }
+
     /** Get all students (Admin only) */
     public List<UserDto> getAllStudents() {
         return userRepository.findAll().stream()
