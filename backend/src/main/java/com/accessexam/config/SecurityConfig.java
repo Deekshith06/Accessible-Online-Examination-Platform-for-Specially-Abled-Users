@@ -61,6 +61,8 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
+            // Enable CORS via CorsFilter bean
+            .cors(org.springframework.security.config.Customizer.withDefaults())
             // Disable CSRF (stateless API)
             .csrf(AbstractHttpConfigurer::disable)
 
