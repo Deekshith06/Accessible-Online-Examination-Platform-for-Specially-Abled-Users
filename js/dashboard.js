@@ -194,3 +194,93 @@ if (dashTTS) {
     dashSpeak(dashTtsActive ? 'Text to speech enabled' : 'Text to speech disabled');
   });
 }
+
+// ===== FETCH DASHBOARD DATA =====
+async function loadDashboardData() {
+  try {
+    // 1. Fetch Exams
+    const exams = await apiFetch('/exams');
+    const examCardsContainer = document.querySelector('.exam-cards');
+    if (examCardsContainer && exams) {
+      examCardsContainer.innerHTML = '';
+      exams.forEach(exam => {
+        const badgeClass = exam.status === 'ACTIVE' ? 'live' : 'upcoming';
+        const badgeColor = exam.status === 'ACTIVE' ? '#00d4aa' : 'var(--accent)';
+        const btnText = exam.status === 'ACTIVE' ? 'Start Exam →' : 'View Details →';
+        const cardHtml = `
+          <div class="exam-avail-card" tabindex="0">
+            <div class="eac-header">
+              <span class="eac-badge ${badgeClass}" style="background:var(--bg-card2); border: 1px solid ${badgeColor}; color:${badgeColor}">${exam.status}</span>
+              <span class="eac-duration">⏱ ${exam.durationMinutes} min</span>
+            </div>
+            <h3 class="eac-title">${exam.title}</h3>
+            <p class="eac-meta">📅 ${new Date(exam.scheduledAt).toLocaleDateString()} &nbsp;|&nbsp; ${exam.marksPerQuestion} Marks/Q</p>
+            <div class="eac-access-tags">
+              <span class="access-tag">🔊 TTS</span>
+              <span class="access-tag">⌨️ Keyboard</span>
+            </div>
+            <a href="#" onclick="startExamHandler(${exam.id}); return false;" class="module-btn">${btnText}</a>
+          </div>
+        `;
+        examCardsContainer.insertAdjacentHTML('beforeend', cardHtml);
+      });
+    }
+
+    // 2. Fetch Submissions
+    const submissions = await apiFetch('/submissions/my');
+    const tbody = document.querySelector('.results-table tbody');
+    if (tbody && submissions) {
+      tbody.innerHTML = '';
+      let totalScore = 0;
+      let maxScore = 0;
+      submissions.forEach(sub => {
+        totalScore += sub.score;
+        maxScore += sub.totalMarks;
+        
+        // Ensure totalMarks is > 0 to avoid division by zero
+        const safeTotal = sub.totalMarks > 0 ? sub.totalMarks : 1; 
+        const pass = sub.score >= (safeTotal * 0.4);
+        const statusClass = pass ? 'pass' : 'fail';
+        const statusText = pass ? 'Passed' : 'Failed';
+        const scoreClass = sub.score >= (safeTotal * 0.8) ? 'high' : 'mid';
+        
+        const row = `
+          <tr>
+            <td>${sub.examTitle}</td>
+            <td>${new Date(sub.attemptedAt).toLocaleDateString()}</td>
+            <td><span class="score-badge ${scoreClass}">${sub.score}/${sub.totalMarks}</span></td>
+            <td><span class="status-badge ${statusClass}">${statusText}</span></td>
+          </tr>
+        `;
+        tbody.insertAdjacentHTML('beforeend', row);
+      });
+      
+      // Update Stats
+      const statValues = document.querySelectorAll('.dsc-value');
+      if (statValues.length >= 3) {
+        statValues[0].textContent = exams ? exams.length : 0;
+        statValues[1].textContent = submissions.length;
+        const avg = maxScore > 0 ? Math.round((totalScore / maxScore) * 100) : 0;
+        statValues[2].textContent = avg + '%';
+      }
+    }
+  } catch (err) {
+    console.error("Failed to load dashboard data:", err);
+  }
+}
+
+window.startExamHandler = function(examId) {
+  localStorage.setItem('accessExam_currentExam', examId);
+  window.location.href = `exam.html?id=${examId}`;
+};
+
+window.addEventListener('DOMContentLoaded', () => {
+  loadDashboardData();
+  
+  // Set username
+  const username = localStorage.getItem('accessExam_username');
+  if (username) {
+    const welcomeName = document.querySelector('.dash-welcome .gradient-text');
+    if (welcomeName) welcomeName.textContent = username;
+  }
+});

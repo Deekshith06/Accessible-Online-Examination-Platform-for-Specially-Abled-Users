@@ -49,7 +49,7 @@ if (toggleRegPwd && regPasswordInput && !toggleRegPwd.dataset.bound) {
 // ===== FORM VALIDATION & SUBMIT (login page) =====
 const loginForm = document.getElementById('login-form');
 if (loginForm) {
-  loginForm.addEventListener('submit', e => {
+  loginForm.addEventListener('submit', async e => {
     e.preventDefault();
     let valid = true;
     const email    = document.getElementById('email');
@@ -70,54 +70,42 @@ if (loginForm) {
 
     if (!valid) return;
 
-    // 2. Credentials Verification
-    const isAdmin = document.getElementById('role-admin')?.classList.contains('active');
-    
-    // Read registered credentials if any
-    const regEmail = localStorage.getItem('accessExam_reg_email');
-    const regPassword = localStorage.getItem('accessExam_reg_password');
-
-    let authenticated = false;
-    if (isAdmin) {
-      // Admin: check default or registered admin
-      if ((email.value.toLowerCase() === 'admin@accessexam.com' && pwd.value === 'password123') ||
-          (email.value.toLowerCase() === regEmail?.toLowerCase() && pwd.value === regPassword)) {
-        authenticated = true;
-      }
-    } else {
-      // Student: check default or registered student
-      if ((email.value.toLowerCase() === 'student@accessexam.com' && pwd.value === 'password123') ||
-          (email.value.toLowerCase() === regEmail?.toLowerCase() && pwd.value === regPassword)) {
-        authenticated = true;
-      }
-    }
-
-    if (!authenticated) {
-      // Show error on the password field as credentials failure
-      pwdErr.textContent = 'Invalid email or password for selected role.';
-      pwd.classList.add('error');
-      return;
-    }
-
-    // Login success
+    // 2. API Request
     const btn = document.getElementById('login-submit');
+    const originalText = btn.textContent;
     btn.textContent = 'Signing in…'; btn.disabled = true;
-    
-    // Save active session role and name
-    localStorage.setItem('accessExam_role', isAdmin ? 'admin' : 'student');
-    const name = !isAdmin && localStorage.getItem('accessExam_reg_firstName') ? localStorage.getItem('accessExam_reg_firstName') : (isAdmin ? 'Admin' : 'Yugandhar');
-    localStorage.setItem('accessExam_username', name);
 
-    setTimeout(() => {
-      window.location.href = isAdmin ? 'admin-dashboard.html' : 'student-dashboard.html';
-    }, 1200);
+    try {
+      const data = await apiFetch('/auth/login', {
+        method: 'POST',
+        body: JSON.stringify({ email: email.value, password: pwd.value })
+      });
+
+      // Login success
+      localStorage.setItem('jwtToken', data.token);
+      localStorage.setItem('accessExam_role', data.role.toLowerCase());
+      localStorage.setItem('accessExam_username', data.name);
+      if (data.disabilityType) {
+        localStorage.setItem('accessExam_disability', data.disabilityType.toLowerCase());
+      }
+
+      setTimeout(() => {
+        window.location.href = data.role === 'ADMIN' ? 'admin-dashboard.html' : 'student-dashboard.html';
+      }, 1200);
+
+    } catch (error) {
+      pwdErr.textContent = error.message || 'Invalid email or password.';
+      pwd.classList.add('error');
+      btn.textContent = originalText;
+      btn.disabled = false;
+    }
   });
 }
 
 // ===== REGISTER FORM =====
 const registerForm = document.getElementById('register-form');
 if (registerForm) {
-  registerForm.addEventListener('submit', e => {
+  registerForm.addEventListener('submit', async e => {
     e.preventDefault();
     let valid = true;
 
@@ -185,23 +173,44 @@ if (registerForm) {
 
     if (!valid) return;
 
-    // Save details to localStorage
-    localStorage.setItem('accessExam_reg_firstName', firstName.value.trim());
-    localStorage.setItem('accessExam_reg_lastName', lastName.value.trim());
-    localStorage.setItem('accessExam_reg_email', email.value.trim());
-    localStorage.setItem('accessExam_reg_password', pwd.value);
-
-    // Save disability choice from the dropdown if available
     const disabilitySelect = document.getElementById('disability-type');
+    let disabilityType = 'NONE';
     if (disabilitySelect && disabilitySelect.value) {
-      const val = disabilitySelect.value;
-      localStorage.setItem('accessExam_disability', val);
-      localStorage.setItem('accessExam_voiceInput', (val === 'visual' || val === 'motor') ? 'true' : 'false');
+      disabilityType = disabilitySelect.value.toUpperCase();
     }
 
     const btn = document.getElementById('register-submit');
+    const originalText = btn.textContent;
     btn.textContent = 'Creating account…'; btn.disabled = true;
-    setTimeout(() => { window.location.href = 'login.html'; }, 1200);
+
+    try {
+      const data = await apiFetch('/auth/register', {
+        method: 'POST',
+        body: JSON.stringify({
+          name: `${firstName.value.trim()} ${lastName.value.trim()}`,
+          email: email.value.trim(),
+          password: pwd.value,
+          disabilityType: disabilityType,
+          role: 'STUDENT'
+        })
+      });
+
+      // Login success
+      localStorage.setItem('jwtToken', data.token);
+      localStorage.setItem('accessExam_role', data.role.toLowerCase());
+      localStorage.setItem('accessExam_username', data.name);
+      localStorage.setItem('accessExam_disability', disabilityType.toLowerCase());
+
+      setTimeout(() => {
+        window.location.href = 'student-dashboard.html';
+      }, 1200);
+
+    } catch (error) {
+      pwdErr.textContent = error.message || 'Registration failed.';
+      pwd.classList.add('error');
+      btn.textContent = originalText;
+      btn.disabled = false;
+    }
   });
 }
 
