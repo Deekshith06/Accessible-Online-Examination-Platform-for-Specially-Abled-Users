@@ -54,8 +54,8 @@ async function init() {
   const urlParams = new URLSearchParams(window.location.search);
   currentExamId = urlParams.get('id') || localStorage.getItem('accessExam_currentExam');
   
-  if (!currentExamId) {
-    alert("No exam selected!");
+  if (!currentExamId || isNaN(parseInt(currentExamId))) {
+    alert("Please select a valid exam from the dashboard first!");
     window.location.href = "student-dashboard.html";
     return;
   }
