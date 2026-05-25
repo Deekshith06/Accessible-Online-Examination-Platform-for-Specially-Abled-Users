@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>AccessExam – Accessible Online Examination Platform</title>
+  <meta name="description" content="An inclusive online examination platform for specially-abled users with text-to-speech, keyboard navigation, high contrast mode, and more."/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Outfit:wght@300;400;600;700;800&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="css/style.css"/>
+</head>
+<body>
+  <div id="vanta-bg" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1; pointer-events: none;"></div>
+
+  <!-- Skip Navigation -->
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+
+  <!-- NAVBAR -->
+  <nav class="navbar" role="navigation" aria-label="Main navigation">
+    <div class="nav-container">
+      <div class="nav-brand">
+        <div class="brand-icon" aria-hidden="true">♿</div>
+        <span class="brand-name">AccessExam</span>
+      </div>
+      <ul class="nav-links" role="list">
+        <li><a href="#home" class="nav-link active">Home</a></li>
+        <li><a href="#features" class="nav-link">Features</a></li>
+        <li><a href="#modules" class="nav-link">Modules</a></li>
+        <li><a href="#tech-stack" class="nav-link">Tech Stack</a></li>
+        <li><a href="#about" class="nav-link">About</a></li>
+      </ul>
+      <div class="nav-actions">
+        <a href="disability-selection.html?action=login" class="btn-secondary" id="nav-login">Login</a>
+        <a href="disability-selection.html?action=register" class="btn-primary" id="nav-register">Get Started</a>
+      </div>
+      <button class="hamburger" id="hamburger" aria-label="Toggle navigation" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <main id="main-content">
+    <section class="hero" id="home" aria-labelledby="hero-heading">
+      <div class="hero-bg-orbs" aria-hidden="true">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+        <div class="orb orb-3"></div>
+      </div>
+      <div class="hero-container">
+        <div class="hero-badge" aria-label="Accessibility focused platform">
+          <span>♿</span> Accessibility First Platform
+        </div>
+        <h1 id="hero-heading" class="hero-title">
+          Exams Made <span class="gradient-text">Accessible</span><br/>
+          for <span class="gradient-text-2">Everyone</span>
+        </h1>
+        <p class="hero-subtitle">
+          An inclusive online examination platform designed specifically for users with visual, hearing, and motor disabilities — ensuring equal opportunity in every assessment.
+        </p>
+        <div class="hero-actions">
+          <a href="disability-selection.html?action=register" class="btn-hero-primary" id="hero-get-started">
+            Start Your Exam <span aria-hidden="true">→</span>
+          </a>
+          <a href="#features" class="btn-hero-secondary" id="hero-learn-more">
+            Explore Features
+          </a>
+        </div>
+        <div class="hero-stats" role="list" aria-label="Platform statistics">
+          <div class="stat-item" role="listitem">
+            <span class="stat-number">4+</span>
+            <span class="stat-label">Disability Types Supported</span>
+          </div>
+          <div class="stat-divider" aria-hidden="true"></div>
+          <div class="stat-item" role="listitem">
+            <span class="stat-number">10+</span>
+            <span class="stat-label">Accessibility Features</span>
+          </div>
+          <div class="stat-divider" aria-hidden="true"></div>
+          <div class="stat-item" role="listitem">
+            <span class="stat-number">100%</span>
+            <span class="stat-label">WCAG Compliant</span>
+          </div>
+        </div>
+      </div>
+      <div class="hero-visual" aria-hidden="true">
+        <div class="exam-card-mockup">
+          <div class="mockup-header">
+            <div class="mockup-dots">
+              <span></span><span></span><span></span>
+            </div>
+            <span class="mockup-title">AccessExam Portal</span>
+          </div>
+          <div class="mockup-body">
+            <div class="mockup-question">
+              <div class="q-label">Question 1 of 10</div>
+              <div class="q-text">What is the capital of India?</div>
+              <div class="mockup-tts">
+                <span class="tts-icon">🔊</span> Read Aloud
+              </div>
+            </div>
+            <div class="mockup-options">
+              <div class="mockup-option selected">● New Delhi</div>
+              <div class="mockup-option">○ Mumbai</div>
+              <div class="mockup-option">○ Chennai</div>
+              <div class="mockup-option">○ Kolkata</div>
+            </div>
+            <div class="mockup-footer">
+              <div class="mockup-timer">⏱ 45:23</div>
+              <div class="mockup-nav">
+                <span class="mockup-btn">← Prev</span>
+                <span class="mockup-btn active">Next →</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ACCESSIBILITY STRIP -->
+    <section class="access-strip" aria-label="Supported disability types">
+      <div class="strip-container">
+        <div class="strip-item">
+          <span class="strip-icon">👁️</span>
+          <span>Visually Impaired</span>
+        </div>
+        <div class="strip-divider" aria-hidden="true"></div>
+        <div class="strip-item">
+          <span class="strip-icon">🧏</span>
+          <span>Hearing Impaired</span>
+        </div>
+        <div class="strip-divider" aria-hidden="true"></div>
+        <div class="strip-item">
+          <span class="strip-icon">🧑‍🦽</span>
+          <span>Motor Disabilities</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- FEATURES -->
+    <section class="features-section" id="features" aria-labelledby="features-heading">
+      <div class="section-container">
+        <div class="section-header">
+          <div class="section-badge">♿ Core Accessibility</div>
+          <h2 id="features-heading" class="section-title">Features Built for <span class="gradient-text">Every User</span></h2>
+          <p class="section-subtitle">Every feature is designed with inclusivity as the foundation, not an afterthought.</p>
+        </div>
+        <div class="features-grid">
+
+          <div class="feature-card" tabindex="0">
+            <div class="feature-icon-wrap visual">
+              <span class="feature-icon">👁️</span>
+            </div>
+            <h3 class="feature-title">Visual Impairment Support</h3>
+            <ul class="feature-list" role="list">
+              <li>🔊 Text-to-Speech for all questions</li>
+              <li>⌨️ Full keyboard navigation</li>
+              <li>🎨 High contrast mode</li>
+              <li>🔍 Adjustable font sizes (up to 3x)</li>
+              <li>🖥️ Screen reader compatible (ARIA)</li>
+            </ul>
+          </div>
+
+          <div class="feature-card" tabindex="0">
+            <div class="feature-icon-wrap hearing">
+              <span class="feature-icon">🧏</span>
+            </div>
+            <h3 class="feature-title">Hearing Impairment Support</h3>
+            <ul class="feature-list" role="list">
+              <li>📄 All instructions in text format</li>
+              <li>🎥 Optional sign-language video guides</li>
+              <li>📢 Visual alerts instead of audio</li>
+              <li>💬 Caption support for all media</li>
+              <li>🔔 Visual notification system</li>
+            </ul>
+          </div>
+
+          <div class="feature-card" tabindex="0">
+            <div class="feature-icon-wrap motor">
+              <span class="feature-icon">🧑‍🦽</span>
+            </div>
+            <h3 class="feature-title">Motor Disability Support</h3>
+            <ul class="feature-list" role="list">
+              <li>🗣️ Voice command navigation</li>
+              <li>🎙️ Speech-to-Text for answers</li>
+              <li>⌨️ Tab-based simple navigation</li>
+              <li>🖱️ Large click targets</li>
+              <li>⏸️ Pause exam option</li>
+            </ul>
+          </div>
+
+
+
+        </div>
+      </div>
+    </section>
+
+    <!-- MODULES -->
+    <section class="modules-section" id="modules" aria-labelledby="modules-heading">
+      <div class="section-container">
+        <div class="section-header">
+          <div class="section-badge">⚙️ System Modules</div>
+          <h2 id="modules-heading" class="section-title">Powerful <span class="gradient-text">Core Modules</span></h2>
+          <p class="section-subtitle">Three dedicated modules ensuring a seamless exam experience.</p>
+        </div>
+        <div class="modules-grid">
+          <div class="module-card student-card" tabindex="0">
+            <div class="module-icon">👨‍🎓</div>
+            <h3 class="module-title">Student Module</h3>
+            <p class="module-desc">A personalized exam environment tailored to each student's accessibility needs.</p>
+            <ul class="module-features" role="list">
+              <li>✅ Secure Registration & Login</li>
+              <li>✅ Accessibility Preference Panel</li>
+              <li>✅ Take Exams with Accommodations</li>
+              <li>✅ Real-time Answer Auto-save</li>
+              <li>✅ View Results & Analytics</li>
+            </ul>
+            <a href="student-dashboard.html" class="module-btn" id="student-module-btn">Explore Student Portal →</a>
+          </div>
+
+          <div class="module-card admin-card" tabindex="0">
+            <div class="module-icon">👨‍🏫</div>
+            <h3 class="module-title">Admin Module</h3>
+            <p class="module-desc">Complete control over exam creation, management, and student accommodations.</p>
+            <ul class="module-features" role="list">
+              <li>✅ Create & Manage Exams</li>
+              <li>✅ Upload Questions (Bulk / Manual)</li>
+              <li>✅ Assign Extra Time per Student</li>
+              <li>✅ Monitor Live Sessions</li>
+              <li>✅ Result Analytics Dashboard</li>
+            </ul>
+            <a href="admin-dashboard.html" class="module-btn" id="admin-module-btn">Explore Admin Portal →</a>
+          </div>
+
+          <div class="module-card engine-card" tabindex="0">
+            <div class="module-icon">🧾</div>
+            <h3 class="module-title">Exam Engine</h3>
+            <p class="module-desc">A robust backend engine handling all exam logic with fairness and reliability.</p>
+            <ul class="module-features" role="list">
+              <li>✅ Smart Timer Handling</li>
+              <li>✅ Flexible Question Navigation</li>
+              <li>✅ Auto Submission on Timeout</li>
+              <li>✅ Anti-Cheating Measures</li>
+              <li>✅ Instant Result Generation</li>
+            </ul>
+            <a href="#" class="module-btn" id="engine-module-btn">Learn More →</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SYSTEM FLOW -->
+    <section class="flow-section" id="about" aria-labelledby="flow-heading">
+      <div class="section-container">
+        <div class="section-header">
+          <div class="section-badge">🏗️ System Flow</div>
+          <h2 id="flow-heading" class="section-title">How It <span class="gradient-text">Works</span></h2>
+          <p class="section-subtitle">A simple, guided journey from login to results.</p>
+        </div>
+        <div class="flow-steps">
+          <div class="flow-step" tabindex="0">
+            <div class="step-number" aria-hidden="true">01</div>
+            <div class="step-icon">🔐</div>
+            <h3 class="step-title">Secure Login</h3>
+            <p class="step-desc">Students login securely with role-based authentication.</p>
+          </div>
+          <div class="flow-arrow" aria-hidden="true">→</div>
+          <div class="flow-step" tabindex="0">
+            <div class="step-number" aria-hidden="true">02</div>
+            <div class="step-icon">♿</div>
+            <h3 class="step-title">Set Preferences</h3>
+            <p class="step-desc">Choose accessibility settings based on disability type.</p>
+          </div>
+          <div class="flow-arrow" aria-hidden="true">→</div>
+          <div class="flow-step" tabindex="0">
+            <div class="step-number" aria-hidden="true">03</div>
+            <div class="step-icon">📝</div>
+            <h3 class="step-title">Start Exam</h3>
+            <p class="step-desc">Attempt exam with full accessibility support active.</p>
+          </div>
+          <div class="flow-arrow" aria-hidden="true">→</div>
+          <div class="flow-step" tabindex="0">
+            <div class="step-number" aria-hidden="true">04</div>
+            <div class="step-icon">✅</div>
+            <h3 class="step-title">Auto Submit</h3>
+            <p class="step-desc">Answers auto-saved and exam submitted on completion.</p>
+          </div>
+          <div class="flow-arrow" aria-hidden="true">→</div>
+          <div class="flow-step" tabindex="0">
+            <div class="step-number" aria-hidden="true">05</div>
+            <div class="step-icon">📊</div>
+            <h3 class="step-title">View Results</h3>
+            <p class="step-desc">Instant results with detailed performance analytics.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TECH STACK -->
+    <section class="tech-section" id="tech-stack" aria-labelledby="tech-heading">
+      <div class="section-container">
+        <div class="section-header">
+          <div class="section-badge">🧩 Technology</div>
+          <h2 id="tech-heading" class="section-title">Built with <span class="gradient-text">Modern Tech</span></h2>
+          <p class="section-subtitle">A powerful Java Full Stack architecture for scalability and reliability.</p>
+        </div>
+        <div class="tech-grid">
+          <div class="tech-card" tabindex="0">
+            <div class="tech-layer">Frontend</div>
+            <div class="tech-items">
+              <span class="tech-badge react">React.js</span>
+              <span class="tech-badge css">Tailwind CSS</span>
+              <span class="tech-badge js">JavaScript</span>
+              <span class="tech-badge aria">ARIA Roles</span>
+              <span class="tech-badge speech">Web Speech API</span>
+            </div>
+          </div>
+          <div class="tech-card" tabindex="0">
+            <div class="tech-layer">Backend</div>
+            <div class="tech-items">
+              <span class="tech-badge java">Java</span>
+              <span class="tech-badge spring">Spring Boot</span>
+              <span class="tech-badge security">Spring Security</span>
+              <span class="tech-badge rest">REST APIs</span>
+              <span class="tech-badge maven">Maven</span>
+            </div>
+          </div>
+          <div class="tech-card" tabindex="0">
+            <div class="tech-layer">Database & Tools</div>
+            <div class="tech-items">
+              <span class="tech-badge mysql">MySQL</span>
+              <span class="tech-badge git">Git / GitHub</span>
+              <span class="tech-badge postman">Postman</span>
+              <span class="tech-badge jwt">JWT Auth</span>
+              <span class="tech-badge docker">Docker</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="cta-section" aria-labelledby="cta-heading">
+      <div class="section-container">
+        <div class="cta-card">
+          <div class="cta-content">
+            <h2 id="cta-heading" class="cta-title">Ready to Make Exams <span class="gradient-text">Accessible?</span></h2>
+            <p class="cta-subtitle">Join the platform that puts every student's needs first. Equal opportunity, inclusive design.</p>
+            <div class="cta-actions">
+              <a href="disability-selection.html?action=register" class="btn-hero-primary" id="cta-register">Register as Student</a>
+              <a href="disability-selection.html?action=login" class="btn-hero-secondary" id="cta-login">Admin Login</a>
+            </div>
+          </div>
+          <div class="cta-visual" aria-hidden="true">
+            <div class="cta-icons">
+              <span>♿</span><span>🔊</span><span>⌨️</span><span>🗣️</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="footer" role="contentinfo">
+    <div class="footer-container">
+      <div class="footer-brand">
+        <div class="brand-icon" aria-hidden="true">♿</div>
+        <span class="brand-name">AccessExam</span>
+        <p class="footer-tagline">Inclusive Examination for All</p>
+      </div>
+      <div class="footer-links">
+        <div class="footer-col">
+          <h4 class="footer-col-title">Platform</h4>
+          <ul role="list">
+            <li><a href="#features">Features</a></li>
+            <li><a href="#modules">Modules</a></li>
+            <li><a href="#tech-stack">Tech Stack</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4 class="footer-col-title">Access</h4>
+          <ul role="list">
+            <li><a href="login.html">Student Login</a></li>
+            <li><a href="register.html">Register</a></li>
+            <li><a href="admin-dashboard.html">Admin</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4 class="footer-col-title">Project</h4>
+          <ul role="list">
+            <li><a href="#about">About</a></li>
+            <li><a href="#">WCAG 2.1 Compliance</a></li>
+            <li><a href="#">Documentation</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2024 AccessExam — Accessible Online Examination Platform for Specially-Abled Users</p>
+      <p class="footer-note">Built with ♥ for inclusivity | Java Full Stack Project</p>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+  <script src="p5.min.js"></script>
+  <script src="vanta.topology.min.js"></script>
+  <script>
+    if (typeof VANTA !== 'undefined') {
+      VANTA.TOPOLOGY({
+        el: "#vanta-bg",
+        mouseControls: true,
+        touchControls: true,
+        gyroControls: false,
+        minHeight: 200.00,
+        minWidth: 200.00,
+        scale: 1.00,
+        scaleMobile: 1.00,
+        color: 0x89964e,
+        backgroundColor: 0x2222
+      });
+    }
+  </script>
+</body>
+</html>

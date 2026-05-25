@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Student Dashboard – AccessExam</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="css/style.css"/>
+  <link rel="stylesheet" href="css/dashboard.css"/>
+</head>
+<body class="dash-body">
+  <div id="vanta-bg" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1; pointer-events: none;"></div>
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+
+  <!-- Sidebar -->
+  <aside class="sidebar" role="navigation" aria-label="Student navigation">
+    <div class="sidebar-brand">
+      <div class="brand-icon">♿</div>
+      <span class="brand-name">AccessExam</span>
+    </div>
+    <nav class="sidebar-nav">
+      <a href="#" class="sidebar-link active" aria-current="page">🏠 Dashboard</a>
+      <a href="exam.html" class="sidebar-link">📝 Take Exam</a>
+      <a href="#" class="sidebar-link">📊 My Results</a>
+      <a href="#" class="sidebar-link">♿ Accessibility</a>
+      <a href="#" class="sidebar-link">👤 Profile</a>
+    </nav>
+    <div class="sidebar-footer">
+      <a href="disability-selection.html" class="sidebar-link logout" id="sidebar-logout">🚪 Logout</a>
+    </div>
+  </aside>
+
+  <!-- Main -->
+  <main class="dash-main" id="main-content">
+    <header class="dash-header">
+      <div>
+        <h1 class="dash-welcome">Welcome back, <span class="gradient-text">Yugandhar</span> 👋</h1>
+        <p class="dash-date">Monday, May 12, 2026</p>
+      </div>
+      <div class="dash-header-actions">
+        <button class="icon-btn" id="dash-tts" aria-label="Toggle Text to Speech">🔊</button>
+        <button class="icon-btn" id="dash-contrast" aria-label="Toggle High Contrast">🎨</button>
+        <button class="icon-btn" id="dash-font" aria-label="Increase Font Size">🔍</button>
+      </div>
+    </header>
+
+    <!-- Stats -->
+    <div class="dash-stats">
+      <div class="dash-stat-card">
+        <div class="dsc-icon" style="background:var(--bg-card2); border: 1px solid var(--primary);">📝</div>
+        <div><div class="dsc-value">3</div><div class="dsc-label">Exams Available</div></div>
+      </div>
+      <div class="dash-stat-card">
+        <div class="dsc-icon" style="background:var(--bg-card2); border: 1px solid #34d399;">✅</div>
+        <div><div class="dsc-value">5</div><div class="dsc-label">Exams Completed</div></div>
+      </div>
+      <div class="dash-stat-card">
+        <div class="dsc-icon" style="background:var(--bg-card2); border: 1px solid #ff6b6b;">🏆</div>
+        <div><div class="dsc-value">82%</div><div class="dsc-label">Average Score</div></div>
+      </div>
+      <div class="dash-stat-card">
+        <div class="dsc-icon" style="background:var(--bg-card2); border: 1px solid #fbbf24;">⏱️</div>
+        <div><div class="dsc-value">+30m</div><div class="dsc-label">Extra Time Granted</div></div>
+      </div>
+    </div>
+
+    <!-- Available Exams -->
+    <section aria-labelledby="exams-heading">
+      <h2 id="exams-heading" class="dash-section-title">Available Exams</h2>
+      <div class="exam-cards">
+        <div class="exam-avail-card">
+          <div class="eac-header">
+            <span class="eac-badge upcoming">Upcoming</span>
+            <span class="eac-duration">⏱ 60 min</span>
+          </div>
+          <h3 class="eac-title">General Knowledge Test</h3>
+          <p class="eac-meta">📅 May 15, 2026 &nbsp;|&nbsp; 20 Questions &nbsp;|&nbsp; MCQ</p>
+          <div class="eac-access-tags">
+            <span class="access-tag">🔊 TTS</span>
+            <span class="access-tag">⌨️ Keyboard</span>
+            <span class="access-tag">⏸ Pause</span>
+          </div>
+          <a href="exam.html" class="module-btn" id="start-exam-1">Start Exam →</a>
+        </div>
+        <div class="exam-avail-card">
+          <div class="eac-header">
+            <span class="eac-badge live" style="background:var(--bg-card2); border: 1px solid #00d4aa; color:#00d4aa">Live</span>
+            <span class="eac-duration">⏱ 45 min</span>
+          </div>
+          <h3 class="eac-title">Mathematics Basics</h3>
+          <p class="eac-meta">📅 Today, 3:00 PM &nbsp;|&nbsp; 15 Questions &nbsp;|&nbsp; MCQ</p>
+          <div class="eac-access-tags">
+            <span class="access-tag">🗣️ Voice</span>
+            <span class="access-tag">📌 One-by-one</span>
+          </div>
+          <a href="exam.html" class="module-btn" id="start-exam-2" style="border-color:var(--secondary);color:var(--secondary)">Join Now →</a>
+        </div>
+        <div class="exam-avail-card">
+          <div class="eac-header">
+            <span class="eac-badge" style="background:var(--bg-card2); border: 1px solid var(--accent); color:var(--accent)">Scheduled</span>
+            <span class="eac-duration">⏱ 90 min</span>
+          </div>
+          <h3 class="eac-title">English Comprehension</h3>
+          <p class="eac-meta">📅 May 20, 2026 &nbsp;|&nbsp; 25 Questions &nbsp;|&nbsp; Mixed</p>
+          <div class="eac-access-tags">
+            <span class="access-tag">🔊 TTS</span>
+            <span class="access-tag">🎨 Contrast</span>
+            <span class="access-tag">🔍 Font+</span>
+          </div>
+          <a href="exam.html" class="module-btn" id="start-exam-3">View Details →</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Recent Results -->
+    <section aria-labelledby="results-heading" style="margin-top:40px;">
+      <h2 id="results-heading" class="dash-section-title">Recent Results</h2>
+      <div class="results-table-wrap">
+        <table class="results-table" role="table" aria-label="Recent exam results">
+          <thead>
+            <tr>
+              <th scope="col">Exam</th>
+              <th scope="col">Date</th>
+              <th scope="col">Score</th>
+              <th scope="col">Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Science Quiz – Chapter 3</td>
+              <td>May 10, 2026</td>
+              <td><span class="score-badge high">88%</span></td>
+              <td><span class="status-badge pass">Passed</span></td>
+            </tr>
+            <tr>
+              <td>History Test – Unit 2</td>
+              <td>May 8, 2026</td>
+              <td><span class="score-badge mid">74%</span></td>
+              <td><span class="status-badge pass">Passed</span></td>
+            </tr>
+            <tr>
+              <td>Computer Basics</td>
+              <td>May 5, 2026</td>
+              <td><span class="score-badge high">92%</span></td>
+              <td><span class="status-badge pass">Passed</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+  <script src="js/voice-control.js"></script>
+  <script src="js/dashboard.js"></script>
+  <script>
+    // Clear disability on logout
+    document.getElementById('sidebar-logout')?.addEventListener('click', () => {
+      localStorage.removeItem('accessExam_disability');
+      localStorage.removeItem('accessExam_voiceInput');
+    });
+
+    // Save current exam selection
+    document.getElementById('start-exam-1')?.addEventListener('click', () => {
+      localStorage.setItem('accessExam_currentExam', 'gk');
+    });
+    document.getElementById('start-exam-2')?.addEventListener('click', () => {
+      localStorage.setItem('accessExam_currentExam', 'math');
+    });
+    document.getElementById('start-exam-3')?.addEventListener('click', () => {
+      localStorage.setItem('accessExam_currentExam', 'english');
+    });
+  </script>
+  <script src="p5.min.js"></script>
+  <script src="vanta.topology.min.js"></script>
+  <script>
+    if (typeof VANTA !== 'undefined') {
+      VANTA.TOPOLOGY({
+        el: "#vanta-bg",
+        mouseControls: true,
+        touchControls: true,
+        gyroControls: false,
+        minHeight: 200.00,
+        minWidth: 200.00,
+        scale: 1.00,
+        scaleMobile: 1.00,
+        color: 0x89964e,
+        backgroundColor: 0x2222
+      });
+    }
+  </script>
+</body>
+</html>
